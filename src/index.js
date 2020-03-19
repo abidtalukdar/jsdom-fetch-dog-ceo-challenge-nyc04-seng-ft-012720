@@ -1,5 +1,6 @@
 // CHALLENGE 1
 const dogContainer = document.querySelector("#dog-image-container")
+const breedDropdown = document.querySelector("#breed-dropdown")
 
 const fetchDogImages = () => {
     return fetch("https://dog.ceo/api/breeds/image/random/4")
@@ -29,7 +30,7 @@ fetch('https://dog.ceo/api/breeds/list/all')
     )
 
 const renderAllBreeds = (breeds) => {
-    const dogBreeds = Object.keys(breeds.message)
+    dogBreeds = Object.keys(breeds.message)
     dogBreeds.forEach(renderOneBreed)
 }
 
@@ -40,9 +41,35 @@ const renderOneBreed = (dogBreed) => {
     breedsContainer.append(dogBreedLi)
 }
 
+// CHALLENGE 3
 breedsContainer.addEventListener("click", event => {
     if (event.target.id === "breed") {
         event.target.style.color = "#ff0000"
         console.log(event.target)
     }
 })
+
+// CHALLENGE 4
+breedDropdown.addEventListener('change', event => {
+    // console.log(event.target.value)
+    selectBreedsStartingWith(event.target.value)
+})
+
+const selectBreedsStartingWith = (letter) => {
+    updateList(dogBreeds.filter(breed => 
+        breed.startsWith(letter)
+    ))
+}
+
+const updateList = (breeds) => {
+    emptyContainer(breedsContainer)
+    breeds.forEach(renderOneBreed)
+}
+
+const emptyContainer = (container) => {
+    let childElement = container.lastElementChild
+    while (childElement) {
+        container.removeChild(childElement)
+        childElement = container.lastElementChild
+    }
+}
